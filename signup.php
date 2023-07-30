@@ -1,0 +1,215 @@
+<?php
+@include 'data-base-connect/config.php';
+if(isset($_POST['submit'])){
+    $name = mysqli_real_escape_string($conn,$_POST['name']);
+    $email = mysqli_real_escape_string($conn,$_POST['email']);
+    $pass = md5($_POST['password']);
+    $cpass = md5($_POST['cpassword']);
+    
+    $select ="select * FROM login WHERE email ='$email' && password ='$pass'";
+    $result = mysqli_query($conn,$select);
+    if(mysqli_num_rows($result)>0){
+        $error[]='user already exist';
+        
+    }else{
+        if($pass != $cpass){
+            $error[]='password not matched';
+        }else{
+            $insert ="INSERT INTO login(name,email,password) VALUE('$name','$email','$pass')";
+            mysqli_query($conn,$insert);
+            header('location:account.php');
+        }
+    }
+}
+// header("location: index.php");
+?>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> All Product - SHOP ONLINE  </title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <style>
+            .container-login{
+                background: radial-gradient(rgb(255, 255, 255), #ff523b);
+                min-height: 525px;
+                align-items: center;
+                padding-top: 2%;
+            }
+            .container-login .login-form form .label1{
+                margin: 10px 0;
+                display: block;
+               padding-left: 4%;
+                border-radius: 5px;
+            }
+            .login-form{
+                margin-left: 32%;
+                
+                border-radius: 25px;
+                width: 30%;
+                height: 500px;
+                background-color: white;
+            }
+            .login-form h2{
+                color: black;
+                font-size: x-large;
+                font-family: Arial, Helvetica, sans-serifs;
+                text-align: center;
+                padding-top: 15px;
+                padding-bottom: 15px;
+               border-bottom: 3px solid #ff523b;
+            
+            }
+            .label{
+                background-color: black;
+                margin-left: 7%;
+                margin-top: 14px;
+                font-size: 18px;
+            }
+            .field input{
+                
+               height: 24px;
+               width: 80%;
+               margin-left: 7%;
+               margin-top: 14px;
+                border-radius: 8px;
+                border-color: black;
+            }
+            .login-form .form-btn{
+                margin-left: 7%;
+                margin-top: 15px;
+                width: 80%;
+                padding: 5px 5px 5px 5px;
+                height: 10%;
+                font-size: 18px;
+                align-items: center;
+                color: white;
+                background-color: #ff523b;
+                border-color: transparent;
+                border-radius: 12px;
+            }
+            .form-btn:hover{
+                background: #563434;
+            }
+            .login-form p{
+                text-align: center;
+                margin-top: 14px;
+                color: black;
+            }
+            .login-form p a{
+                color: blue;
+                font-size: 14px;
+            }
+            .login-form p a:hover{
+                color: red;
+            }
+            .login-form .error-msg{
+                margin-left: 8%;
+                padding:5px 5px 5px 5px ;
+                width: 80%;
+                border-radius: 5px;
+                background-color: red;
+            } 
+        </style>
+    </head>
+    <body>
+    
+        <div class="container">
+            <div class="navbar">
+                <div class="logo">
+                    <img src="images/1664512227823.jpg" width="100px">
+                </div>
+                <nav>
+                    <ul>
+                      <!-- <li><a href="loginfist.php">Home</a></li>
+                        <li><a href="loginfist.php">Product</a></li>
+                        <li><a href="loginfist.php">Cart</a></li>
+                        <li><a href="">Contact</a></li>
+                        <li><a href="account.php">Account</a></li> -->
+                    </ul>
+                </nav>
+                
+                </div>
+         </div>
+
+         <!----------account-->
+        
+    <div class="container-login">
+        <div class="login-form">
+          <form action="" method="post"> <h2 >Login</h2>
+            <?php
+            if(isset($error)){
+                foreach($error as $error){
+                    echo'<span class="error-msg">'.$error.'</span>';
+                }
+            }
+            ?>
+            <div class="label1">Full name</div>
+            <div class="field">
+             <input type="text" name="name" placeholder="  Enter your Name" required><br>
+            </div>
+            <div class="label1">Email</div>
+           <div class="field">
+            <input type="text" name="email" placeholder="  Enter Register mail id" required><br>
+           </div>
+           <div class="label1">Password</div>
+         <div class="field">
+            <input type="password" name="password" placeholder="  your password" required><br>
+                 </div>
+                 <div class="label1">conform Password</div>
+             <div class="field">
+            <input type="password" name="cpassword" placeholder="  your password" required><br>
+          </div>
+         <input type="submit" name="submit" value="submit" class="form-btn">
+         <p>Already have an account? <a href="account.php">Login now</a></p>
+         </form> 
+        </div>
+    </div>
+
+
+<!----------footer------------>
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="footer-col-1">
+                <h3> download our app</h3>
+                <p>download app for android or ios phones</p>
+               <a href="signup.html"><img src="images/android.png" width="210px" height="50px"  ></a> 
+                <a href="#"><img src="images/apple.png"width="210px" height="50px"></a>
+            </div>
+            <div class="footer-col-2">
+                <img src="images/1664512227823.jpg" height="70px" width="100px">
+                
+                <p>our purpose is to sustainable make pleasure and benefits of different tech gajits to the manny</p>
+
+            </div>
+            <div class="footer-col-3">
+                <h3> usefull links </h3>
+                <ul>
+                    <li>coupons</li>
+                    <li>blog post</li>
+                    <li>return policy</li>
+                    <li>join affiliate</li>
+                </ul>
+            </div>
+            <div class="footer-col-4">
+                <h3> follow us </h3>
+                <ul>
+                    <li>facebook</li>
+                    <li>twitter</li>
+                    <li>instagram</li>
+                    <li>you tube</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <p class="copyright">copyright 2020- shop online </p>
+    </div>
+</div>
+
+
+
+    </body>
+</html>
